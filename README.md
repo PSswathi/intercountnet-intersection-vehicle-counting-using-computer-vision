@@ -33,6 +33,8 @@ InterCountNet is an AI-powered computer vision system that detects and counts mu
 
 Dataset url: https://universe.roboflow.com/machine-learning-class-eiri5/intersection-traffic-piimy/dataset/10
 
+The project will train and evaluate three state-of-the-art object detection models—YOLOv8, Faster R-CNN, and RetinaNet—on a dataset of 17,000 intersection traffic images. After preprocessing and annotation validation, each model will be trained to detect and classify vehicles (car, truck, bus, motorcycle, bicycle). The predicted bounding boxes will then be post-processed to generate per-class vehicle counts for each image. Finally, the models will be compared based on accuracy (mAP), precision/recall, inference speed, and robustness to occlusion, enabling selection of the best-performing approach for an automated intersection traffic counting system.
+
 
 
 
