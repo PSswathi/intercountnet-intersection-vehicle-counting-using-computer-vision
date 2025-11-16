@@ -39,34 +39,34 @@ The project will train and evaluate three state-of-the-art object detection mode
 ## **Tech stack:**
 
 1. Programming Language
-	•	Python 3.10+
+*	Python 3.10+
 
 2. Deep Learning Frameworks
-	•	PyTorch (primary framework for model training)
-	•	Ultralytics YOLOv8 (built on PyTorch)
-	•	TorchVision (for Faster R-CNN & RetinaNet models)
+*	PyTorch (primary framework for model training)
+*	Ultralytics YOLOv8 (built on PyTorch)
+*	TorchVision (for Faster R-CNN & RetinaNet models)
 
 3. Computer Vision & Data Tools
-	•	OpenCV (image preprocessing, visualization)
-	•	Albumentations (data augmentation)
-	•	NumPy / Pandas (data handling)
+*	OpenCV (image preprocessing, visualization)
+*	Albumentations (data augmentation)
+*	NumPy / Pandas (data handling)
 
 4. Model Training & Experimentation
-	•	Jupyter Notebook / Google Colab / AWS Sagemaker
-	•	Weights & Biases (W&B) or TensorBoard (experiment tracking)
-	•	CUDA/cuDNN for GPU acceleration
+*	Jupyter Notebook / Google Colab / AWS Sagemaker
+*	Weights & Biases (W&B) or TensorBoard (experiment tracking)
+*	CUDA/cuDNN for GPU acceleration
 
 5. Model Evaluation & Reporting
-	•	scikit-learn (metrics, analysis)
-	•	Matplotlib / Seaborn / Plotly (visualization)
+*	scikit-learn (metrics, analysis)
+*	Matplotlib / Seaborn / Plotly (visualization)
 
 6. Deployment (Optional)
-	•	FastAPI or Flask (REST API for inference)
-	•	Docker (containerization)
-	•	AWS EC2 / Lambda / S3 (cloud hosting)
+*	FastAPI or Flask (REST API for inference)
+*	Docker (containerization)
+*	AWS EC2 / Lambda / S3 (cloud hosting)
 
 7. Version Control & Workflow
-	•	Git & GitHub
+*	Git & GitHub
 
 
 
