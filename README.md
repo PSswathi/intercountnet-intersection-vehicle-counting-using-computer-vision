@@ -68,7 +68,9 @@ The project will train and evaluate three state-of-the-art object detection mode
 7. Version Control & Workflow
 *	Git & GitHub
 
+Sample Prediction image:
 
+![Alt Text](images/demo.png)
 
 
 
