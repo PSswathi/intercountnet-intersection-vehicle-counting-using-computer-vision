@@ -70,7 +70,7 @@ The project will train and evaluate three state-of-the-art object detection mode
 
 Sample Prediction image:
 
-![Alt Text](demo.png)
+![Alt Text](images/demo.png)
 
 
 
