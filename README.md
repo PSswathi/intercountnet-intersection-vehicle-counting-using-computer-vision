@@ -131,7 +131,7 @@ Inferences Recorded:
 
 https://drive.google.com/drive/folders/1VAET8f3ZWHwLT8y0nSEfZSEhOlukpfP9?usp=sharing
 
-For testing a sample intersection traffic video is uploaded in gdrive and shared in below link ,
+For sample video example for testing the inference ,
 
 https://drive.google.com/file/d/1adX73S3BmQkVz_VHIv-eQxoieKVxQ5p4/view?usp=sharing
 
