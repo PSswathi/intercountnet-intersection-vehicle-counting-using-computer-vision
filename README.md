@@ -140,16 +140,27 @@ https://drive.google.com/file/d/1adX73S3BmQkVz_VHIv-eQxoieKVxQ5p4/view?usp=shari
 ## References:
 
 Bochkovskiy, A., Wang, C.-Y., & Liao, H.-Y. M. (2020). YOLOv4: Optimal speed and accuracy of object detection. arXiv. https://arxiv.org/abs/2004.10934
+
 Carion, N., Massa, F., Synnaeve, G., Usunier, N., Kirillov, A., & Zagoruyko, S. (2020). End-to-end object detection with transformers. In European Conference on Computer Vision (ECCV). https://arxiv.org/abs/2005.12872
+
 Lin, T.-Y., Goyal, P., Girshick, R., He, K., & Dollár, P. (2017). Focal loss for dense object detection. In Proceedings of the IEEE International Conference on Computer Vision (ICCV). https://arxiv.org/abs/1708.02002
+
 Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G., … & Chintala, S. (2019). PyTorch: An imperative style, high-performance deep learning library. In Advances in Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/1912.01703
+
 Redmon, J., & Farhadi, A. (2018). YOLOv3: An incremental improvement. arXiv. https://arxiv.org/abs/1804.02767
+
 Ren, S., He, K., Girshick, R., & Sun, J. (2015). Faster R-CNN: Towards real-time object detection with region proposal networks. In Advances in Neural Information Processing Systems (NIPS). https://arxiv.org/abs/1506.01497
+
 Ultralytics. (2023). Ultralytics YOLOv8 documentation. Ultralytics. https://docs.ultralytics.com/
+
 Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017). Attention is all you need. In Advances in Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/1706.03762
+
 Wang, C.-Y., Bochkovskiy, A., & Liao, H.-Y. M. (2022). YOLOv7: Trainable bag-of-freebies sets new state-of-the-art for real-time object detectors. arXiv. https://arxiv.org/abs/2207.02696
+
 Abadi, M., Barham, P., Chen, J., Chen, Z., Davis, A., Dean, J., … & Zheng, X. (2016). TensorFlow: A system for large-scale machine learning. In 12th USENIX Symposium on Operating Systems Design and Implementation (OSDI). https://www.tensorflow.org/
+
 TensorFlow. (2023). TensorFlow API documentation. TensorFlow. https://www.tensorflow.org/api_docs
+
 PyTorch. (2023). PyTorch documentation. PyTorch. https://pytorch.org/docs/
 
 
