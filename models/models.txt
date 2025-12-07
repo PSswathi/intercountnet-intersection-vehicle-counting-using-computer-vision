@@ -1,0 +1,35 @@
+Models are saved in S3 bucket in aws
+
+# ---------------- CONFIG ----------------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+#  PUBLIC S3 URL (update this!)
+MODEL_URL = "https://vehicle-detection-models.s3.us-east-1.amazonaws.com/best_faster_rcnn_vehicle_detector.pt"
+#MODEL_URL = "https://vehicle-detection-models.s3.us-east-1.amazonaws.com/best.pt"
+#MODEL_URL = "https://vehicle-detection-models.s3.us-east-1.amazonaws.com/DETR_vehicle_model.pt
+
+# Model will be stored locally after first download
+MODEL_PATH = os.path.join(BASE_DIR, "best_faster_rcnn_vehicle_detector.pt")
+
+CLASS_NAMES = ["bicycle", "bus", "car", "license-plate", "motorcycle"]
+CONF_THRESHOLD = 0.5
+FRAME_SKIP = 5
+RESIZE = (640, 480)
+
+
+# ---------------- DOWNLOAD MODEL FROM PUBLIC S3 ----------------
+@st.cache_resource
+def download_model():
+    if not os.path.exists(MODEL_PATH):
+        st.write("Downloading Faster R-CNN model from S3…")
+
+        response = requests.get(MODEL_URL)
+
+        if response.status_code != 200:
+            st.error("Failed to download model. Check if your S3 file is public.")
+            st.stop()
+
+        with open(MODEL_PATH, "wb") as f:
+            f.write(response.content)
+
+    return MODEL_PATH

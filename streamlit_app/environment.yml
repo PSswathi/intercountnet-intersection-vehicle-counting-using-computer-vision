@@ -1,0 +1,32 @@
+name: vehicle_detection
+
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.9
+  - numpy
+  - matplotlib
+  - pillow
+  - opencv
+  - streamlit
+
+  # PyTorch (CPU version – safe default)
+  - pytorch
+  - torchvision
+  - torchaudio
+  - cpuonly
+
+  # For evaluation and utils
+  - scikit-learn
+  - pandas
+
+  - pip
+  - pip:
+      - pycocotools
+      - filterpy
+      - scikit-image
+      - lapx
+      - gdown
