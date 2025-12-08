@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: InterCountNet – EC2 + Docker + S3-read role
+Description: InterCountNet – EC2 + Docker + S3-read role (Ubuntu 22.04)
 
 Parameters:
   KeyName:
@@ -84,9 +84,7 @@ Resources:
                 -e MODEL_BUCKET=${S3Bucket} \
                 --name app intercountnet'
     Properties:
-      ImageId: !Sub
-        - '{{resolve:ssm:/aws/service/canonical/ubuntu/server/22.04/stable/current/amd64/hvm/ami-id}}'
-        - {}
+      ImageId: ami-0c7217cdde317cfec          # Ubuntu 22.04 LTS us-east-1
       InstanceType: !Ref InstanceType
       KeyName: !Ref KeyName
       SecurityGroupIds: [!Ref SecurityGroup]
@@ -96,7 +94,7 @@ Resources:
           #!/bin/bash -xe
           apt-get update -y
           apt-get install -y python3-pip python3-distutils
-          pip3 install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-py3-latest.tar.gz
+          pip3 install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-py3-latest.tar.gz 
           /usr/local/bin/cfn-init -v \
             --stack ${AWS::StackName} \
             --resource EC2Instance \
@@ -106,6 +104,9 @@ Resources:
             --stack ${AWS::StackName} \
             --resource EC2Instance \
             --region ${AWS::Region}
+      Tags:
+        - Key: Name
+          Value: intercountnet-ec2
     CreationPolicy:
       ResourceSignal:
         Timeout: PT10M
