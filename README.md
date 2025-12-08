@@ -90,26 +90,30 @@ Sample Prediction image:
 ## **Conda env + running the Streamlit app
 
 # 1. Go to your project folder
-cd /Users/..../aai-521/intercountnet-intersection-vehicle-counting-using-computer-vision
+> cd /Users/..../aai-521/intercountnet-intersection-vehicle-counting-using-computer-vision
+
+> cd streamlit_app
+
+> conda env create -f environment.yml
 
 # 2. If you want to update env after editing environment.yml:
-conda env update -n vehicle_detection -f environment.yml
+> conda env update -n vehicle_detection -f environment.yml
 
 # 3. Activate it
-conda activate vehicle_detection
+> conda activate vehicle_detection
 
 # 4. Run your Streamlit app (example)
 
 For object detection with YOLO model,
 
-cd streamlit_app
-streamlit run app_yolo.py
+> cd streamlit_app
+> streamlit run app_yolo.py
 
 or
 
 For object detection  using Fsster RCNN and analytics of count of each vehicle type in each frame/per sec,
 
-streamlit run app_rcnns3.py
+> streamlit run app_rcnns3.py
 
 If you ever want to completely recreate the env from scratch:
 
