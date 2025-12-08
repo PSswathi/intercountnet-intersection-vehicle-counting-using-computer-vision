@@ -164,6 +164,62 @@ TensorFlow. (2023). TensorFlow API documentation. TensorFlow. https://www.tensor
 PyTorch. (2023). PyTorch documentation. PyTorch. https://pytorch.org/docs/
 
 
+## Deploy the Stack + Model
 
+### Prerequisites
+- AWS CLI installed and configured (`aws configure`)
+- Key-pair `xx-key` created in the target region
+- Git repo cloned locally (contains `aws/intercount-aws-infra.yaml` & `deploy.sh`)
+
+---
+
+### 1. Upload Model to S3
+
+Stores the model artifact where the EC2 instance (via IAM role) can download it at start-up.
+
+```bash
+# one-time: create bucket (if not exists)
+aws s3 mb s3://intercountnet-models --region us-east-1
+
+# copy your trained weights
+aws s3 cp models/best.pt s3://intercountnet-models/best-yolov8n.pt
+```
+
+### 2. Launch Infrastructure
+
+Performs below:
+1. Uploads the CloudFormation template
+2. Creates security group, IAM role, t3.micro EC2
+3. Clones the repo, builds Docker image, starts container on port 80
+4. waits until healthy and outputs the public URL
+
+```bash
+chmod +x ./aws/deploy.sh
+./aws/deploy.sh intercountnet us-east-1
+```
+
+```
+Stack created successfully.
+[
+  {
+    "OutputKey": "PublicIp",
+    "OutputValue": "<ip>"
+  },
+  {
+    "OutputKey": "StreamlitURL",
+    "OutputValue": "http://<ip>"
+  }
+]
+```
+Open the Streamlit URL in a browser – the app should load and download the model on first inference.
+
+### 3. Tear Down When Done
+
+Deletes the entire stack (EC2, security group, IAM role) and stops any charges.
+
+```bash
+chmod +x ./aws/delete.sh
+./aws/delete.sh intercountnet us-east-1
+```
 
 

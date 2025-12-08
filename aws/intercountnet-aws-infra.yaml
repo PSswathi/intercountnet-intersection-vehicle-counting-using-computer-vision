@@ -1,0 +1,106 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Streamlit Inter Vehicle Count – EC2 + Docker + S3 read-only role
+
+Parameters:
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+  GithubRepo:
+    Type: String
+  S3Bucket:
+    Type: String
+  InstanceType:
+    Type: String
+    AllowedValues: [t3.micro, t3.small]
+
+Resources:
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow SSH and Streamlit port
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0   # <-- lock to your IP later
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 8501
+          ToPort: 8501
+          CidrIp: 0.0.0.0/0
+
+  S3ReadRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles: [!Ref S3ReadRole]
+
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Metadata:
+      AWS::CloudFormation::Init:
+        configSets:
+          default:
+            - 01_docker
+            - 02_app
+        01_docker:
+          packages:
+            apt:
+              docker.io: []
+              git: []
+              awscli: []
+          commands:
+            01_add_user:
+              command: "usermod -aG docker ubuntu"
+        02_app:
+          commands:
+            01_clone:
+              command: !Sub |
+                sudo -u ubuntu bash -c 'git clone ${GithubRepo} /home/ubuntu/app'
+            02_build:
+              command: "sudo -u ubuntu bash -c 'cd /home/ubuntu/app && docker build -t inter-vehicle-count .'"
+            03_run:
+              command: !Sub |
+                sudo -u ubuntu bash -c 'docker run -d --restart unless-stopped \
+                -p 80:8501 \
+                -e MODEL_BUCKET=${S3Bucket} \
+                --name app inter-vehicle-count'
+    Properties:
+      ImageId: ami-0c7217cdde317cfec   # Ubuntu 22.04 us-east-1
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      SecurityGroupIds: [!Ref SecurityGroup]
+      IamInstanceProfile: !Ref InstanceProfile
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          apt-get update -y
+          apt-get install -y python3-pip
+          pip3 install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-py3-latest.tar.gz
+          /usr/local/bin/cfn-init -v --stack ${AWS::StackName} --resource EC2Instance --configsets default --region ${AWS::Region}
+          /usr/local/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource EC2Instance --region ${AWS::Region}
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT10M
+
+Outputs:
+  PublicIp:
+    Description: Public IP of the instance
+    Value: !GetAtt EC2Instance.PublicIp
+  StreamlitURL:
+    Description: Streamlit demo URL
+    Value: !Sub 'http://${EC2Instance.PublicIp}'
