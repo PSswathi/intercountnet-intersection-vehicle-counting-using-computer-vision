@@ -61,9 +61,6 @@ Resources:
               git: []
               awscli: []
               python3-distutils: [] 
-          commands:
-            01_start_docker:
-              command: "systemctl enable --now docker"
         02_app:
           commands:
             01_clone:
