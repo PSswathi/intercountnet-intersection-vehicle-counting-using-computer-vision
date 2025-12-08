@@ -60,16 +60,12 @@ Resources:
               docker.io: []
               git: []
               awscli: []
-              python3-distutils: []
+              python3-distutils: [] 
           commands:
             01_add_user:
               command: "usermod -aG docker ubuntu"
             02_start_docker:
               command: "systemctl enable --now docker"
-            03_symlink_cfn:
-              command: |
-                ln -s /usr/local/bin/cfn-init   /usr/bin/cfn-init   || true
-                ln -s /usr/local/bin/cfn-signal /usr/bin/cfn-signal || true
         02_app:
           commands:
             01_clone:
@@ -93,8 +89,13 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
           apt-get update -y
-          apt-get install -y python3-pip python3-distutils
-          pip3 install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-py3-latest.tar.gz 
+          apt-get install -y python3-pip
+
+          pip3 install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-py3-latest.tar.gz
+
+          ln -s /usr/local/bin/cfn-init /usr/bin/cfn-init || true
+          ln -s /usr/local/bin/cfn-signal /usr/bin/cfn-signal || true
+
           /usr/local/bin/cfn-init -v \
             --stack ${AWS::StackName} \
             --resource EC2Instance \
@@ -109,7 +110,7 @@ Resources:
           Value: intercountnet-ec2
     CreationPolicy:
       ResourceSignal:
-        Timeout: PT10M
+        Timeout: PT20M
 
 Outputs:
   PublicIp:
