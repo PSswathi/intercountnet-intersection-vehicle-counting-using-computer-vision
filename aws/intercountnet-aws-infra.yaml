@@ -62,9 +62,7 @@ Resources:
               awscli: []
               python3-distutils: [] 
           commands:
-            01_add_user:
-              command: "usermod -aG docker ubuntu"
-            02_start_docker:
+            01_start_docker:
               command: "systemctl enable --now docker"
         02_app:
           commands:
