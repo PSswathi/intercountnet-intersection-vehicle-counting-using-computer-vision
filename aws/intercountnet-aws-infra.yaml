@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Streamlit Inter Vehicle Count – EC2 + Docker + S3 read-only role
+Description: InterCountNet – EC2 + Docker + S3-read role
 
 Parameters:
   KeyName:
@@ -10,25 +10,22 @@ Parameters:
     Type: String
   InstanceType:
     Type: String
+    Default: t3.micro
     AllowedValues: [t3.micro, t3.small]
 
 Resources:
   SecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Allow SSH and Streamlit port
+      GroupDescription: SSH + Streamlit port 80
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
-          CidrIp: 0.0.0.0/0   # <-- lock to your IP later
+          CidrIp: 0.0.0.0/0   # lock to your IP later
         - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 8501
-          ToPort: 8501
           CidrIp: 0.0.0.0/0
 
   S3ReadRole:
@@ -55,32 +52,41 @@ Resources:
       AWS::CloudFormation::Init:
         configSets:
           default:
-            - 01_docker
+            - 01_pkgs
             - 02_app
-        01_docker:
+        01_pkgs:
           packages:
-            apt:
+            apt_get:
               docker.io: []
               git: []
               awscli: []
+              python3-distutils: []
           commands:
             01_add_user:
               command: "usermod -aG docker ubuntu"
+            02_start_docker:
+              command: "systemctl enable --now docker"
+            03_symlink_cfn:
+              command: |
+                ln -s /usr/local/bin/cfn-init   /usr/bin/cfn-init   || true
+                ln -s /usr/local/bin/cfn-signal /usr/bin/cfn-signal || true
         02_app:
           commands:
             01_clone:
               command: !Sub |
                 sudo -u ubuntu bash -c 'git clone ${GithubRepo} /home/ubuntu/app'
             02_build:
-              command: "sudo -u ubuntu bash -c 'cd /home/ubuntu/app && docker build -t inter-vehicle-count .'"
+              command: "sudo -u ubuntu bash -c 'cd /home/ubuntu/app && docker build -t intercountnet .'"
             03_run:
               command: !Sub |
                 sudo -u ubuntu bash -c 'docker run -d --restart unless-stopped \
                 -p 80:8501 \
                 -e MODEL_BUCKET=${S3Bucket} \
-                --name app inter-vehicle-count'
+                --name app intercountnet'
     Properties:
-      ImageId: ami-0c7217cdde317cfec   # Ubuntu 22.04 us-east-1
+      ImageId: !Sub
+        - '{{resolve:ssm:/aws/service/canonical/ubuntu/server/22.04/stable/current/amd64/hvm/ami-id}}'
+        - {}
       InstanceType: !Ref InstanceType
       KeyName: !Ref KeyName
       SecurityGroupIds: [!Ref SecurityGroup]
@@ -89,10 +95,17 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
           apt-get update -y
-          apt-get install -y python3-pip
+          apt-get install -y python3-pip python3-distutils
           pip3 install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-py3-latest.tar.gz
-          /usr/local/bin/cfn-init -v --stack ${AWS::StackName} --resource EC2Instance --configsets default --region ${AWS::Region}
-          /usr/local/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource EC2Instance --region ${AWS::Region}
+          /usr/local/bin/cfn-init -v \
+            --stack ${AWS::StackName} \
+            --resource EC2Instance \
+            --configsets default \
+            --region ${AWS::Region}
+          /usr/local/bin/cfn-signal -e $? \
+            --stack ${AWS::StackName} \
+            --resource EC2Instance \
+            --region ${AWS::Region}
     CreationPolicy:
       ResourceSignal:
         Timeout: PT10M
@@ -102,5 +115,5 @@ Outputs:
     Description: Public IP of the instance
     Value: !GetAtt EC2Instance.PublicIp
   StreamlitURL:
-    Description: Streamlit demo URL
+    Description: Streamlit browser URL
     Value: !Sub 'http://${EC2Instance.PublicIp}'
