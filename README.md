@@ -50,7 +50,6 @@ DETR results are stored in,
 ../intercountnet-intersection-vehicle-counting-using-computer-vision/blob/main/detr_results
 
 
-
 ## **Tech stack:**
 
 1. Programming Language
@@ -83,90 +82,32 @@ DETR results are stored in,
 7. Version Control & Workflow
 *	Git & GitHub
 
-Sample Prediction image:
+## Setup
 
-![Alt Text](figs/demo.png)
-
-## **Conda env + running the Streamlit app
-
-# 1. Go to your project folder
-> cd /Users/..../aai-521/intercountnet-intersection-vehicle-counting-using-computer-vision
-
-> cd streamlit_app
-
-> conda env create -f environment.yml
-
-# 2. If you want to update env after editing environment.yml:
-> conda env update -n vehicle_detection -f environment.yml
-
-# 3. Activate it
-> conda activate vehicle_detection
-
-# 4. Run your Streamlit app (example)
-
-For object detection with YOLO model,
-
-> cd streamlit_app
-> streamlit run app_yolo.py
-
-or
-
-For object detection  using Fsster RCNN and analytics of count of each vehicle type in each frame/per sec,
-
-> streamlit run app_rcnns3.py
-
-If you ever want to completely recreate the env from scratch:
-
-conda remove -n vehicle_detection --all
+1. Create conda environment
+```bash
+# Frontend
+cd streamlit_app
 conda env create -f environment.yml
+
+cd ..
+#Backend
+conda env create -f environment.yml
+```
+2. Activate the environment
+```bash
 conda activate vehicle_detection
-
-## Shared Links
-
-Project deliverables :
-
-https://drive.google.com/drive/folders/1Y9yDMsb0EPvTQBobA3s9zI-IrSJEKIJO?usp=sharing
-
-Video Presentations:
-
-https://drive.google.com/file/d/1Ec_qwv2iO_MUFOdAZtAziKsD2NM8GURu/view?usp=sharing
-
-Inferences Recorded:
-
-https://drive.google.com/drive/folders/1VAET8f3ZWHwLT8y0nSEfZSEhOlukpfP9?usp=sharing
-
-For sample video example for testing the inference ,
-
-https://drive.google.com/file/d/1adX73S3BmQkVz_VHIv-eQxoieKVxQ5p4/view?usp=sharing
-
-
-
-## References:
-
-Bochkovskiy, A., Wang, C.-Y., & Liao, H.-Y. M. (2020). YOLOv4: Optimal speed and accuracy of object detection. arXiv. https://arxiv.org/abs/2004.10934
-
-Carion, N., Massa, F., Synnaeve, G., Usunier, N., Kirillov, A., & Zagoruyko, S. (2020). End-to-end object detection with transformers. In European Conference on Computer Vision (ECCV). https://arxiv.org/abs/2005.12872
-
-Lin, T.-Y., Goyal, P., Girshick, R., He, K., & Dollár, P. (2017). Focal loss for dense object detection. In Proceedings of the IEEE International Conference on Computer Vision (ICCV). https://arxiv.org/abs/1708.02002
-
-Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G., … & Chintala, S. (2019). PyTorch: An imperative style, high-performance deep learning library. In Advances in Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/1912.01703
-
-Redmon, J., & Farhadi, A. (2018). YOLOv3: An incremental improvement. arXiv. https://arxiv.org/abs/1804.02767
-
-Ren, S., He, K., Girshick, R., & Sun, J. (2015). Faster R-CNN: Towards real-time object detection with region proposal networks. In Advances in Neural Information Processing Systems (NIPS). https://arxiv.org/abs/1506.01497
-
-Ultralytics. (2023). Ultralytics YOLOv8 documentation. Ultralytics. https://docs.ultralytics.com/
-
-Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017). Attention is all you need. In Advances in Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/1706.03762
-
-Wang, C.-Y., Bochkovskiy, A., & Liao, H.-Y. M. (2022). YOLOv7: Trainable bag-of-freebies sets new state-of-the-art for real-time object detectors. arXiv. https://arxiv.org/abs/2207.02696
-
-Abadi, M., Barham, P., Chen, J., Chen, Z., Davis, A., Dean, J., … & Zheng, X. (2016). TensorFlow: A system for large-scale machine learning. In 12th USENIX Symposium on Operating Systems Design and Implementation (OSDI). https://www.tensorflow.org/
-
-TensorFlow. (2023). TensorFlow API documentation. TensorFlow. https://www.tensorflow.org/api_docs
-
-PyTorch. (2023). PyTorch documentation. PyTorch. https://pytorch.org/docs/
-
+```
+3. Run the app
+```bash
+cd streamlit_app
+streamlit run app_yolo.py
+```
+4. Update conda environment
+```bash
+cd streamlit_app
+conda env update -n vehicle_detection -f environment.yml
+```
 
 ## Deploy the Stack + Model
 
@@ -207,17 +148,24 @@ Stack created successfully.
 [
   {
     "OutputKey": "PublicIp",
-    "OutputValue": "<ip>"
+    "OutputValue": "98.93.78.223"
   },
   {
     "OutputKey": "StreamlitURL",
-    "OutputValue": "http://<ip>"
+    "OutputValue": "http://98.93.78.223"
   }
 ]
 ```
-Open the Streamlit URL in a browser – the app should load and download the model on first inference.
+Open the Streamlit URL 'http://98.93.78.223' in a browser – the app should load and download the model on first inference.
 
-### 3. Tear Down When Done
+### 3. Update Infrastructure
+
+```bash
+chmod +x ./aws/update.sh
+./aws/update.sh intercountnet us-east-1
+```
+
+### 4. Tear Down When Done
 
 Deletes the entire stack (EC2, security group, IAM role) and stops any charges.
 
@@ -226,4 +174,50 @@ chmod +x ./aws/delete.sh
 ./aws/delete.sh intercountnet us-east-1
 ```
 
+## Sample Prediction image:
 
+![Alt Text](figs/demo.png)
+
+
+## Project deliverables shared links:
+
+https://drive.google.com/drive/folders/1Y9yDMsb0EPvTQBobA3s9zI-IrSJEKIJO?usp=sharing
+
+Video Presentations:
+
+https://drive.google.com/file/d/1Ec_qwv2iO_MUFOdAZtAziKsD2NM8GURu/view?usp=sharing
+
+Inferences Recorded:
+
+https://drive.google.com/drive/folders/1VAET8f3ZWHwLT8y0nSEfZSEhOlukpfP9?usp=sharing
+
+For sample video example for testing the inference ,
+
+https://drive.google.com/file/d/1adX73S3BmQkVz_VHIv-eQxoieKVxQ5p4/view?usp=sharing
+
+
+## References:
+
+Bochkovskiy, A., Wang, C.-Y., & Liao, H.-Y. M. (2020). YOLOv4: Optimal speed and accuracy of object detection. arXiv. https://arxiv.org/abs/2004.10934
+
+Carion, N., Massa, F., Synnaeve, G., Usunier, N., Kirillov, A., & Zagoruyko, S. (2020). End-to-end object detection with transformers. In European Conference on Computer Vision (ECCV). https://arxiv.org/abs/2005.12872
+
+Lin, T.-Y., Goyal, P., Girshick, R., He, K., & Dollár, P. (2017). Focal loss for dense object detection. In Proceedings of the IEEE International Conference on Computer Vision (ICCV). https://arxiv.org/abs/1708.02002
+
+Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G., … & Chintala, S. (2019). PyTorch: An imperative style, high-performance deep learning library. In Advances in Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/1912.01703
+
+Redmon, J., & Farhadi, A. (2018). YOLOv3: An incremental improvement. arXiv. https://arxiv.org/abs/1804.02767
+
+Ren, S., He, K., Girshick, R., & Sun, J. (2015). Faster R-CNN: Towards real-time object detection with region proposal networks. In Advances in Neural Information Processing Systems (NIPS). https://arxiv.org/abs/1506.01497
+
+Ultralytics. (2023). Ultralytics YOLOv8 documentation. Ultralytics. https://docs.ultralytics.com/
+
+Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017). Attention is all you need. In Advances in Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/1706.03762
+
+Wang, C.-Y., Bochkovskiy, A., & Liao, H.-Y. M. (2022). YOLOv7: Trainable bag-of-freebies sets new state-of-the-art for real-time object detectors. arXiv. https://arxiv.org/abs/2207.02696
+
+Abadi, M., Barham, P., Chen, J., Chen, Z., Davis, A., Dean, J., … & Zheng, X. (2016). TensorFlow: A system for large-scale machine learning. In 12th USENIX Symposium on Operating Systems Design and Implementation (OSDI). https://www.tensorflow.org/
+
+TensorFlow. (2023). TensorFlow API documentation. TensorFlow. https://www.tensorflow.org/api_docs
+
+PyTorch. (2023). PyTorch documentation. PyTorch. https://pytorch.org/docs/
