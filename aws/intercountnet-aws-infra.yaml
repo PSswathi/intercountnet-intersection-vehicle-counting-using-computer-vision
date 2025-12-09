@@ -10,8 +10,7 @@ Parameters:
     Type: String
   InstanceType:
     Type: String
-    Default: t3.micro
-    AllowedValues: [t3.micro, t3.small]
+    Default: t3.medium
 
 Resources:
   SecurityGroup:
@@ -51,24 +50,24 @@ Resources:
     Metadata:
       AWS::CloudFormation::Init:
         configSets:
-          default:
-            - 01_pkgs
-            - 02_app
-        01_pkgs:
-          packages:
-            apt_get:
-              docker.io: []
-              git: []
-              awscli: []
-              python3-distutils: [] 
-        02_app:
+          default: [install_and_run]   # single config-set, full control
+
+        install_and_run:
           commands:
-            01_clone:
+            01_enable_univ:
+              command: "sudo add-apt-repository -y universe"
+            02_update:
+              command: "sudo apt-get update"
+            03_docker:
+              command: "sudo apt-get install -y docker.io git awscli python3-distutils"
+            04_docker_group:
+              command: "sudo usermod -aG docker ubuntu"
+            05_clone:
               command: !Sub |
-                sudo -u ubuntu bash -c 'git clone ${GithubRepo} /home/ubuntu/app'
-            02_build:
-              command: "sudo -u ubuntu bash -c 'cd /home/ubuntu/app && docker build -t intercountnet .'"
-            03_run:
+                sudo -u ubuntu bash -c 'git clone ${GithubRepo} /home/ubuntu/repo'
+            06_build:
+              command: "sudo -u ubuntu bash -c 'cd /home/ubuntu/repo && docker build -t intercountnet .'"
+            07_run:
               command: !Sub |
                 sudo -u ubuntu bash -c 'docker run -d --restart unless-stopped \
                 -p 80:8501 \
@@ -77,6 +76,12 @@ Resources:
     Properties:
       ImageId: ami-0c7217cdde317cfec          # Ubuntu 22.04 LTS us-east-1
       InstanceType: !Ref InstanceType
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 30
+            VolumeType: gp3
+            DeleteOnTermination: true
       KeyName: !Ref KeyName
       SecurityGroupIds: [!Ref SecurityGroup]
       IamInstanceProfile: !Ref InstanceProfile

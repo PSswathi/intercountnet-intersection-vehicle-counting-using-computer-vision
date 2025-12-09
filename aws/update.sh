@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-
 # ------------------------------------------------------------------
-#  One-command CloudFormation launcher for the stack
-#  ./deploy.sh  [stack-name]  [region]
+#  update.sh  – update the existing CloudFormation stack in-place
+#  ./update.sh  [stack-name]  [region]
 #  Defaults: stack-name = intercountnet , region = us-east-1
 # ------------------------------------------------------------------
 
@@ -12,15 +11,15 @@ STACK_NAME=${1:-intercountnet}
 REGION=${2:-us-east-1}
 TEMPLATE_FILE="aws/intercountnet-aws-infra.yaml"
 
-# ------------- fill your defaults ------------------------------
-KEY_PAIR="my-key"            # must exist in the region
+# ------------- same defaults as deploy.sh -------------------------
+KEY_PAIR="my-key"
 GITHUB_REPO="https://github.com/PSswathi/intercountnet-intersection-vehicle-counting-using-computer-vision.git"
 S3_BUCKET="intercountnet-models"
 INSTANCE_TYPE="t3.medium"
 # ---------------------------------------------------------------
 
-echo "☁️  Creating CloudFormation stack '$STACK_NAME' in $REGION ..."
-aws cloudformation create-stack \
+echo "☁️  Updating CloudFormation stack '$STACK_NAME' in $REGION ..."
+aws cloudformation update-stack \
   --stack-name "$STACK_NAME" \
   --template-body "file://${TEMPLATE_FILE}" \
   --parameters \
@@ -32,12 +31,12 @@ aws cloudformation create-stack \
   --region "$REGION" \
   --disable-rollback
 
-echo "⏳  Waiting for stack to complete (~3 min) ..."
-aws cloudformation wait stack-create-complete \
+echo "⏳  Waiting for update to complete ..."
+aws cloudformation wait stack-update-complete \
   --stack-name "$STACK_NAME" \
   --region "$REGION"
 
-echo "✅  Stack created successfully."
+echo "✅  Stack updated successfully."
 aws cloudformation describe-stacks \
   --stack-name "$STACK_NAME" \
   --query 'Stacks[0].Outputs' \
