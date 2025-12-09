@@ -178,6 +178,10 @@ chmod +x ./aws/delete.sh
 
 ![Alt Text](figs/demo.png)
 
+### sample deployment Inference images:
+
+![Alt Text](figs/deployed_results.png)
+
 
 ## Project deliverables shared links:
 
