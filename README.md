@@ -148,15 +148,15 @@ Stack created successfully.
 [
   {
     "OutputKey": "PublicIp",
-    "OutputValue": "98.93.78.223"
+    "OutputValue": "34.226.233.101"
   },
   {
     "OutputKey": "StreamlitURL",
-    "OutputValue": "http://98.93.78.223"
+    "OutputValue": http://34.226.233.101"
   }
 ]
 ```
-Open the Streamlit URL 'http://98.93.78.223' in a browser – the app should load and download the model on first inference.
+Open the Streamlit URL 'http://34.226.233.101' in a browser – the app should load and download the model on first inference.
 
 ### 3. Update Infrastructure
 
