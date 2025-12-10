@@ -185,8 +185,10 @@ chmod +x ./aws/delete.sh
   Your browser does not support the video tag.
 </video>
 
+### Faster rcnn clips:
+
 <video width="700" controls>
-  <source src="https://github.com/PSswathi/intercountnet-intersection-vehicle-counting-using-computer-vision/raw/main/figs/faster-rcnn-inference.mov" type="video/mp4">
+  <source src="https://github.com/PSswathi/intercountnet-intersection-vehicle-counting-using-computer-vision/blob/main/figs/faster-rcnn-inference.mov" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
