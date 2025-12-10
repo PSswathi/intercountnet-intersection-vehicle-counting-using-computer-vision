@@ -178,9 +178,18 @@ chmod +x ./aws/delete.sh
 
 ![Alt Text](figs/demo.png)
 
-### sample deployment Inference images:
+### sample deployed YOLO Inference video clips:
 
-![Alt Text](figs/deployed_results.png)
+<video width="700" controls>
+  <source src="https://github.com/PSswathi/intercountnet-intersection-vehicle-counting-using-computer-vision/raw/main/figs/yolo_inference.mov" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<video width="700" controls>
+  <source src="https://github.com/PSswathi/intercountnet-intersection-vehicle-counting-using-computer-vision/raw/main/figs/faster-rcnn-inference.mov" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 
 
 ## Project deliverables shared links:
